@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<!-- REVIEW 대한 xml문서 입니다. -->
+	
+<mapper namespace="review">
+
+<!-- 나의 리뷰(차량) -->
+	<select id="myCarReview" parameterType="string" resultType="reviewVo">
+		SELECT A.RVW_NO, A.RES_C_NO, A.RVW_CONT, A.RVW_STAR, A.RVW_DATE
+		  FROM CARREVIEW A
+	INNER JOIN RES_CAR B 
+			ON(A.RES_C_NO = B.RES_C_NO)
+		 WHERE B.USER_ID = #{user_id}
+	</select>
+	
+
+
+<!-- 나의 리뷰(숙소) -->
+	<select id="myRoomReview" parameterType="string" resultType="reviewVo">
+		SELECT A.RVW_NO, A.RES_R_NO, A.RVW_CONT, A.RVW_STAR, A.RVW_DATE
+		  FROM ROOMREVIEW A
+    INNER JOIN RES_LOD B 
+            ON(A.RES_R_NO = B.RES_R_NO)
+	     WHERE B.USER_ID = #{user_id}
+	</select>
+	
+<!-- 나의 리뷰삭제 (숙소) -->
+	<delete id="deleteRoomReview" parameterType="int">
+		DELETE FROM ROOMREVIEW 
+		WHERE RVW_NO=#{rvw_no}
+	</delete>
+
+<!-- 나의 리뷰삭제 (차량) -->
+	<delete id="deleteCarReview" parameterType="int">
+		DELETE FROM CARREVIEW 
+		WHERE RVW_NO=#{rvw_no}
+	</delete>
+<!-- 리뷰등록 숙소 -->	
+	<insert id="roomReviewInsert" parameterType="reviewVo">
+		INSERT INTO ROOMREVIEW(RVW_NO, RES_R_NO, RVW_CONT,RVW_STAR,RVW_DATE)
+		VALUES(SEQ_ROOMREVIEW_NO.NEXTVAL,#{res_r_no},#{rvw_cont},#{rvw_star}, sysdate)
+	</insert>
+<!-- 리뷰등록 차량 -->	
+	<insert id="carReviewInsert" parameterType="reviewVo">
+		INSERT INTO CARREVIEW(RVW_NO, RES_C_NO, RVW_CONT,RVW_STAR,RVW_DATE)
+		VALUES(SEQ_CARREVIEW_NO.NEXTVAL,#{res_c_no},#{rvw_cont},#{rvw_star}, sysdate)
+	</insert>
+
+</mapper>

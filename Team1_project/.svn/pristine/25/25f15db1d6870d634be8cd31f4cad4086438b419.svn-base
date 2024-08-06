@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<!-- 숙박업소에 대한 xml문서 입니다. -->
+<mapper namespace="lodging">
+
+	<!-- 예약 등록 -->
+	<insert id="resLodInsert" parameterType="resLodVO">
+		INSERT INTO RES_LOD (RES_R_NO, ROOM_NO, USER_ID, CNP_CODE, LOD_START, LOD_END, LOD_PRICE, RES_DATE, LOD_CODE)
+		VALUES (SEQ_RES_LOD_R_NO.NEXTVAL, #{room_no}, #{user_id}, #{cnp_code}, #{lod_start}, #{lod_end}, #{lod_price}, SYSDATE, #{lod_code})
+	</insert>
+	
+	<!-- 입력받은 쿠폰의 사용여부 확인 -->
+	<select id="lodgingCnpUseCheck" parameterType="map" resultType="resLodVo">
+		SELECT *
+		FROM RES_LOD
+		WHERE USER_ID = #{user_id}
+		AND CNP_CODE = #{cnp_code}
+	</select>
+
+	<!-- 입력받은 쿠폰 코드 존재 여부 확인 -->
+	<select id="lodgingCnpCheck" parameterType="String" resultType="lodgingCouponVo">
+		SELECT * FROM COUPON
+		WHERE CNP_CODE = #{cnp_code}
+	</select>
+	
+	<!-- 예약하기 페이지 숙소 정보 출력하기  -->
+	<select id="resLodgingPageInfo" parameterType="map" resultType="resLodgingInfoVo">
+		SELECT *
+		FROM ROOMS R
+		LEFT OUTER JOIN ROOM_IMG RI ON R.LOD_CODE = RI.LOD_CODE AND R.ROOM_NO = RI.ROOM_NO
+		WHERE R.ROOM_TYPE = #{room_type}
+		AND R.LOD_CODE = #{lod_code}
+	</select>
+	
+	<!-- 리뷰 불러오기 -->
+	<select id="lodgingReview" resultType="lodgingRoomReviewVo"> 
+		SELECT *
+		  FROM ROOMREVIEW R
+		  JOIN RES_LOD RL ON RL.RES_R_NO = R.RES_R_NO 
+		 WHERE LOD_CODE = #{lod_code}
+	</select>
+	
+	<!-- 검색 숙소 조회 테스트-->
+	<!-- 전체 숙소 리스트 불러오기-->
+	<select id="searchLodging" resultType="lodgingListVo">
+		SELECT A.LOD_TYPE,
+		A.LOD_NM,
+		A.LOD_ADDR,
+		A.L_IMG_PATH,
+		MIN(B.ROOM_PRICE) lowestRoomPrice
+		FROM LODGING A
+		INNER JOIN ROOMS B ON A.LOD_CODE = B.LOD_CODE
+		GROUP BY A.LOD_TYPE, A.LOD_NM, A.LOD_ADDR, A.L_IMG_PATH
+	</select>
+	
+	<!-- 해당 숙소의 객실 리스트 출력하기 -->
+	<select id="roomsList" parameterType="map" resultType="roomsVo">
+		SELECT A.LOD_CODE, B.ROOM_TYPE, B.ROOM_PRS, B.ROOM_PRICE, I.R_IMG_PATH
+		  FROM LODGING A
+		 INNER JOIN ROOMS B ON A.LOD_CODE = B.LOD_CODE
+		  LEFT JOIN ROOM_IMG I ON B.LOD_CODE = I.LOD_CODE AND B.ROOM_NO = I.ROOM_NO
+		 WHERE A.LOD_CODE = #{lod_code}
+		 <if test="guestNum != null">
+		   AND B.ROOM_PRS >= #{guestNum}
+		 </if>
+		 <if test="startDate != null and endDate != null">
+        <![CDATA[		
+		   AND NOT EXISTS ( 
+		                    SELECT 1 
+		                      FROM RES_LOD R
+		                     WHERE R.LOD_CODE = A.LOD_CODE 
+		                       AND R.ROOM_NO = B.ROOM_NO
+		                       AND NOT (to_char(R.LOD_END, 'YYYY-MM-DD') <= #{startDate} OR to_char(R.LOD_START, 'YYYY-MM-DD') >= #{endDate})
+		                   )
+	    ]]>
+	    </if>
+	</select>
+	
+	
+	<!-- 검색조건에 따른 숙소 리스트 중에서 하나의 숙소 선택 후 상세페이지 출력하기 -->
+	<select id="lodgingDetail" parameterType="map"
+		resultType="lodgingDetailVo">
+		SELECT A.LOD_CODE, A.LOD_TYPE, A.LOD_NM, A.LOD_ADDR, A.LOD_TEL,
+		       A.LOD_MAIL, A.LOD_CONT, A.LOD_INFO, A.L_IMG_PATH, MIN(B.ROOM_PRICE) AS lowestRoomPrice
+		FROM LODGING A
+		INNER JOIN ROOMS B ON (A.LOD_CODE = B.LOD_CODE)
+		<where>
+			<if test="lodgingName != null and lodgingName != ''">
+				AND (A.LOD_NM LIKE '%' || #{lodgingName} || '%' OR A.LOD_ADDR LIKE '%'
+				|| #{lodgingName} || '%')
+			</if>
+			<if test="guestNum != null">
+              	<![CDATA[
+                  AND B.ROOM_PRS >= #{guestNum}
+                ]]>
+			</if>
+			<if
+				test="lodgingType != null  and lodgingType != '' and lodgingType != '전체'">
+				AND A.LOD_TYPE = #{lodgingType}
+			</if>
+			AND NOT EXISTS (
+			SELECT 1
+			FROM RES_LOD R
+			WHERE R.LOD_CODE = A.LOD_CODE
+			AND R.ROOM_NO = B.ROOM_NO
+			<if test="startDate!=null and startDate!=''">
+				<if test="endDate!=null and endDate!=''">
+                    <![CDATA[
+                    AND NOT (
+                              to_char(R.LOD_END, 'YYYY-MM-DD') <= #{startDate}
+                              OR to_char(R.LOD_START, 'YYYY-MM-DD') >= #{endDate}
+                             )
+                    ]]>
+				</if>
+			</if>
+			)
+		</where>
+		AND A.LOD_CODE = #{lod_code}
+		GROUP BY A.LOD_CODE, A.LOD_TYPE, A.LOD_NM, A.LOD_ADDR, A.LOD_TEL,
+		A.LOD_MAIL, A.LOD_CONT, A.LOD_INFO, A.L_IMG_PATH
+	</select>
+	
+	<!-- 검색조건에 따른 숙소 리스트 불러오기 -->
+	<select id="searchLodgingWithCond" parameterType="map" resultType="searchLodgingListVo">
+	        SELECT A.LOD_CODE, A.LOD_TYPE, A.LOD_NM, A.LOD_ADDR, A.LOD_TEL, A.LOD_MAIL, A.LOD_CONT, A.LOD_INFO, A.L_IMG_PATH, MIN(B.ROOM_PRICE) AS lowestRoomPrice
+              FROM LODGING A
+             INNER JOIN ROOMS B ON (A.LOD_CODE = B.LOD_CODE)
+           <where>
+              <if test="lodgingName != null and lodgingName != ''">
+                  AND (A.LOD_NM LIKE '%' || #{lodgingName} || '%' OR A.LOD_ADDR LIKE '%' || #{lodgingName} || '%')
+              </if>
+              <if test="guestNum != null">
+              	<![CDATA[
+                  AND B.ROOM_PRS >= #{guestNum}
+                ]]>
+              </if>
+              <if test="lodgingType != null  and lodgingType != '' and lodgingType != '전체'">
+                  AND A.LOD_TYPE = #{lodgingType}
+              </if>
+                  AND NOT EXISTS (
+                  SELECT 1 
+                  FROM RES_LOD R
+                  WHERE R.LOD_CODE = A.LOD_CODE
+                  AND R.ROOM_NO = B.ROOM_NO 
+                  <if test="startDate!=null and startDate!=''">
+                  <if test="endDate!=null and endDate!=''">
+                    <![CDATA[
+                    AND NOT (
+                              to_char(R.LOD_END, 'YYYY-MM-DD') <= #{startDate}
+                              OR to_char(R.LOD_START, 'YYYY-MM-DD') >= #{endDate}
+                             )         
+                    ]]>
+                  </if>
+                  </if>
+                  )
+        	</where>
+       		 		GROUP BY A.LOD_CODE, A.LOD_TYPE, A.LOD_NM, A.LOD_ADDR, A.LOD_TEL, A.LOD_MAIL, A.LOD_CONT, A.LOD_INFO, A.L_IMG_PATH
+	</select>
+
+	
+</mapper>

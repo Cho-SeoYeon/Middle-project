@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<!-- 공지사항에 대한 xml문서 입니다. -->
+	
+<mapper namespace="car">
+
+	<!-- 공지사항 조회 -->
+	<select id="carList" resultType="carListVo">
+		SELECT 
+		    *
+		FROM 
+		    rentcar a
+		JOIN 
+		    car b ON a.RENT_CODE = b.RENT_CODE
+		JOIN 
+		    CAR_IMG c ON c.CAR_NO = b.CAR_NO
+	</select>
+
+<select id="carSearchList" parameterType="map" resultType="carListVo">
+    <![CDATA[
+		SELECT *
+		FROM CAR
+		JOIN RENTCAR ON CAR.RENT_CODE = RENTCAR.RENT_CODE
+		JOIN CAR_IMG ON CAR.CAR_NO = CAR_IMG.CAR_NO
+		WHERE LOWER(CAR.CAR_NAME) LIKE '%' || LOWER(#{carName}) || '%'
+		]]>
+		    <if test="carType != null and carType != '전체'">
+        <![CDATA[
+		AND CAR.CAR_TYPE = #{carType}
+		]]>
+		</if>
+		<![CDATA[
+		AND NOT EXISTS (
+		  SELECT 1
+		  FROM RES_CAR
+		  WHERE CAR.CAR_NO = RES_CAR.CAR_NO
+		    AND (
+		      (RES_CAR.RENT_START <= #{outDate} AND RES_CAR.RENT_END >= #{inDate})
+		      OR
+		      (RES_CAR.RENT_START <= #{outDate} AND RES_CAR.RENT_END >= #{outDate})
+		      OR
+		      (RES_CAR.RENT_START >= #{inDate} AND RES_CAR.RENT_END <= #{outDate})
+		    )
+		)
+		]]>
+</select>
+
+<select id="carReviewList" resultType="reviewVo" parameterType="String">
+		SELECT * FROM RES_CAR RC, CARREVIEW CV
+	     WHERE RC.RES_C_NO = CV.RES_C_NO
+	       AND TRIM(CAR_NO) = #{car_no}
+</select>
+
+<select id="carCouponUseCheck" resultType="CarCouponVO" parameterType="map">
+	select * from res_car
+	where user_id = #{userId}
+	and CNP_CODE = #{code}	
+</select>
+
+<select id="carCouponCodeCheck" resultType="CarCouponVO" parameterType="String">
+	select * from coupon
+	where CNP_CODE = #{data}
+</select>
+ 
+<insert id="resCarPayment" parameterType="resCarVo">
+	insert into res_car(RES_C_NO, USER_ID, CAR_NO, CNP_CODE, CAR_INSR, RENT_START, RENT_END, RENT_PRICE, RES_C_DATE)
+	values(SEQ_RES_CAR.nextval, #{user_id}, #{car_no} , #{cnp_code}, #{car_insr}, #{rent_start}, #{rent_end}, #{rent_price}, SYSDATE )
+</insert>
+
+
+</mapper>

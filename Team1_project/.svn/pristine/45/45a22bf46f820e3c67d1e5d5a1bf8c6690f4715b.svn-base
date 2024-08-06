@@ -1,0 +1,251 @@
+<%@page import="kr.or.ddit.vo.CarVO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ page isELIgnored="true" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="<%= request.getContextPath()%>/Car/car.css">
+<script type="text/javascript" src="<%= request.getContextPath()%>/js/jquery-3.7.1.min.js"></script>
+
+
+<script>
+
+$(function(){
+// 	대여일시,반납일시에 오늘날짜와 내일날짜를 placeholder처럼 넣어놓은 코드
+
+	let mainStrHddn = "<%=(String)request.getAttribute("mainStrHddn") %>";
+	let mainEndHddn = "<%=(String)request.getAttribute("mainEndHddn") %>";
+	let mainSearchHddn = "<%=(String)request.getAttribute("mainSearchHddn") %>";
+	
+
+	// let currentDate = new Date();
+// 	$('#inDate').val(currentDate.toISOString().slice(0, 10));
+// 	currentDate.setDate(currentDate.getDate() + 1);
+// 	let tomorrow = currentDate.toISOString().slice(0, 10);
+// 	$('#outDate').val(tomorrow);
+	$('#inDate').val(mainStrHddn);
+	$('#outDate').val(mainEndHddn);
+	$('#carName').val(mainSearchHddn);
+///////////////////////////////////////////////////////////
+
+	// 평상시 리스트 띄워주는곳(검색 안했을때)
+    $.ajax({
+        url: "<%=request.getContextPath()%>/carList.do",
+        type: "GET",
+        dataType: "json",
+        success: function(carList) {
+            var tableHtml = "";
+            
+            $.each(carList, function(i, car){
+           		tableHtml += `<div class="car-item">`;
+               	tableHtml += `<img class="car-img" alt="asd" src="<%= request.getContextPath()%>/images/imageView.do?filepath=${car.c_img_path}">`;
+               	tableHtml += `<div class = "center-right-info">`;
+               	tableHtml += `<p class ="car-rent-nm">${car.rent_nm}</p>`;
+               	tableHtml += `<p class="car-name">${car.car_name}</p>`;
+               	tableHtml += `<p class ="car-price">${car.car_price}</p>`;
+               	tableHtml += `<p style="display : none;" class ="car-no" data-car-no ='${car.car_no}' >${car.car_no}</p>`;
+               	tableHtml += `<p style="display : none;" class ="car-cont" data-car-cont ='${car.car_cont}' >${car.car_cont}</p>`;
+               	tableHtml += `<p style="display : none;" class ="rent-addr" data-rent-addr ='${car.rent_addr}' >${car.rent_addr}</p>`;
+               	tableHtml += `<p style="display : none;" class ="car_year" data-car_year ='${car.car_year}' >${car.car_year}</p>`;
+               	tableHtml += `</div></div><br>`;
+   				tableHtml += `<hr>`;
+               	
+            });
+            
+            tableHtml += '</table>';
+            $('#firstInput').html(tableHtml);
+        },
+        error: function(xhr) {
+            alert('Error: ' + xhr.status);
+        }
+    });
+
+
+    $(document).on('click', '.car-item', function() {
+        
+        var rentNm = $(this).find('.car-rent-nm').text();
+        var carName = $(this).find('.car-name').text();
+        var imgPath = $(this).find('.car-img').attr('src');
+        var carNo = $(this).find('.car-no').data("car-no");
+        var carCont = $(this).find('.car-cont').data("car-cont");
+        var rentAddr = $(this).find('.rent-addr').data("rent-addr");
+        var inDate = $('#inDate').val();
+        var outDate = $('#outDate').val();
+        var car_year = $(this).find('.car_year').data("car_year");
+        var carPrice = $(this).find('.car-price').text();
+		alert(carPrice);
+// 		alert(inDate);
+// 		alert(outDate);
+//         var inDate =  = $(this).find('.rent-addr').data("rent-addr");
+// 		var outDate =  = $(this).find('.rent-addr').data("rent-addr");
+// 		var carYear =  = $(this).find('.rent-addr').data("rent-addr");
+// 		var carPrice =  = $(this).find('.rent-addr').data("rent-addr");
+    	
+    	$('#car_price').val(carPrice);
+    	$('#rent_nm').val(rentNm);
+    	$('#car_name').val(carName);
+    	$('#img_path').val(imgPath);
+    	$('#car_no').val(carNo);
+    	$('#car_cont').val(carCont);
+    	$('#rent_addr').val(rentAddr);
+    	$('#detail_InDate').val(inDate);
+    	$('#detail_OutDate').val(outDate);
+    	$('#car_year').val(car_year);
+    	
+    	$('#formInfo').submit();
+   	});
+
+//--------------------------------------------------------------------------
+
+		// 검색조건에 맞게 리스트 띄워주는곳
+		$('#search').on('click', function(){
+			let carName = $('#carName').val();
+			let inDate = $('#inDate').val();
+			let outDate = $('#outDate').val();
+			let carType = $('input[name="carType"]:checked').val();
+			
+			 $.ajax({
+			        url: "<%=request.getContextPath()%>/carList.do",
+			        type: "GET",
+			        data : {
+			        	"carName" : carName,
+			        	"inDate" :inDate,
+			        	"outDate" :outDate,
+			        	"carType" :carType
+			        },
+			        dataType: "json",
+			        success: function(carList) {
+			            var tableHtml = "";
+			         
+			            $.each(carList, function(i, car){
+			            	tableHtml += `<div class="car-item">`;
+			               	tableHtml += `<img class="car-img" alt="asd" src="<%= request.getContextPath()%>/images/imageView.do?filepath=${car.c_img_path}">`;
+			               	tableHtml += `<div class = "center-right-info">`;
+			               	tableHtml += `<p class ="car-rent-nm">${car.rent_nm}</p>`;
+			               	tableHtml += `<p class="car-name">${car.car_name}</p>`;
+			               	tableHtml += `<p class ="car-price">${car.car_price}</p>`;
+			               	tableHtml += `<p style="display : none;" class ="car-no" data-car-no ='${car.car_no}' >${car.car_no}</p>`;
+			               	tableHtml += `<p style="display : none;" class ="car-cont" data-car-cont ='${car.car_cont}' >${car.car_cont}</p>`;
+			               	tableHtml += `<p style="display : none;" class ="rent-addr" data-rent-addr ='${car.rent_addr}' >${car.rent_addr}</p>`;
+			               	tableHtml += `<p style="display : none;" class ="inDate" data-inDate ='${car.inDate}' >${car.inDate}</p>`;
+			               	tableHtml += `<p style="display : none;" class ="outDate" data-outDate ='${car.outDate}' >${car.outDate}</p>`;
+			               	tableHtml += `<p style="display : none;" class ="car_year" data-car_year ='${car.car_year}' >${car.car_year}</p>`;
+			               	tableHtml += `</div></div><br>`;
+			   				tableHtml += `<hr>`;
+			            	
+			            });
+			            
+			            tableHtml += '</table>';
+			            $('#firstInput').html(tableHtml);
+			        },
+			        error: function(xhr) {
+			            alert('Error: ' + xhr.status);
+			        }
+			    });
+		});
+
+	
+})
+</script>
+</head> 
+<form id="formInfo" action="<%= request.getContextPath()%>/carDetail.do">
+	<input type="hidden" name="car_price" id="car_price">
+	<input type="hidden" name="rent_nm" id="rent_nm">
+	<input type="hidden" name="car_name" id="car_name">
+	<input type="hidden" name="img_path" id="img_path">
+	<input type="hidden" name="car_no" id="car_no">
+	<input type="hidden" name="car_cont" id="car_cont">
+	<input type="hidden" name="rent_addr" id="rent_addr">
+	<input type="hidden" name="inDate" id="detail_InDate">
+	<input type="hidden" name="outDate" id="detail_OutDate">
+	<input type="hidden" name="car_year" id="car_year">
+</form>
+
+<body>
+<!-- 	<input type="button" value = "테스트" id="test"> -->
+<div class = "all-div">
+	<div class = "top">
+<!-- 		<div class = "top-left"> -->
+			<img class ="top-left"  alt="logo" src="<%= request.getContextPath()%>/images/logo.png">
+<!-- 		</div> -->
+		
+		<div class = "top-right">
+			<a href="">숙소</a>
+			<a href="">렌트카</a>
+			<a href="">이벤트</a>
+			
+		</div>
+		
+	</div>
+	<hr>
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+	<div class = "center">
+		<div class = "side-left">
+			<div class ="side-left-info">
+				<h3>일정</h3>
+				<input id="carName" type="text" placeholder="차량을 검색하시오."><br>
+				
+				대여일시<br>
+				<input id="inDate" type="date"><br>
+				
+				반납일시<br>
+				<input id="outDate" type="date"><br>
+				
+				<hr>
+				<br>
+				
+			</div>
+			
+			<div class = "left-radio-select" id="carOptions">
+			    차량종류<br>
+			  <br>
+			  <input type="radio" id="optionAll" name="carType" value="전체" checked>
+			  <label for="optionAll">전체</label><br>
+			
+			  <input type="radio" id="optionEconomy" name="carType" value="경/소형">
+			  <label for="optionEconomy">경/소형</label><br>
+			
+			  <input type="radio" id="optionSedan" name="carType" value="중형차">
+			  <label for="optionSedan">중형차</label><br>
+			
+			  <input type="radio" id="optionSUV" name="carType" value="SUV">
+			  <label for="optionSUV">SUV</label><br>
+			
+			  <input type="radio" id="optionLuxury" name="carType" value="전기차">
+			  <label for="optionLuxury">전기차</label><br>
+			</div>
+			<br>
+			<input id="search" type="button" value="검색">
+		</div>
+	<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->	
+		
+		
+		
+		<div class = "side-right">
+			<div class = "car-list">
+				<div class = "car-list-selectOne">
+					<div id="firstInput"></div>
+				</div>	
+				<hr>
+				
+			</div>
+		</div>
+	</div>
+	
+	
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->	
+	<div class ="footer">
+	
+		<div class = "footer-info">
+			1 2 3 4 5 6 7 8 9 10 >
+		</div>
+	
+	</div>
+	
+</div>
+</body>
+</html>

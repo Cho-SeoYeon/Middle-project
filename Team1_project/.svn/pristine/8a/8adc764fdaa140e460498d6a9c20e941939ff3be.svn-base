@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 이벤트에 대한 xml문서 입니다. -->
+
+<mapper namespace="event">
+
+	<!-- 이벤트 전체리스트 출력 -->
+	<select id="eventList" resultType="eventVo">
+		select evnt_no, cnp_code, evnt_title
+		  from event
+	</select>
+
+	<!-- 이벤트 상세내역 출력 -->
+	<select id="eventDetail" parameterType="int" resultType="eventVo">
+		select *
+		  from event
+		 where evnt_no = #{evnt_no}
+	</select>
+
+	<!-- 이벤트 등록 -->
+	<insert id="eventInsert" parameterType="eventVo">
+		insert into event
+		 values (SEQ_EVNT_NO.nextval, #{cnp_code}, #{evnt_title}, #{evnt_img_path})
+	</insert>
+
+	<!-- 이벤트 삭제 -->
+	<delete id="eventDelete" parameterType="int">
+		delete 
+		  from event
+		 where evnt_no = #{evnt_no}
+	</delete>
+
+</mapper>	

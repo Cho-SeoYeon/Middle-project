@@ -1,0 +1,108 @@
+/* table-style.css */
+
+/* Base table styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table headers and cells styles */
+.table th,
+.table td {
+  padding: 12px 15px;
+  text-align: center; /* Center aligning text */
+  border-bottom: 1px solid #ddd;
+}
+
+/* Table header styles */
+.table thead th {
+  background-color: #4CAF50; /* Green background */
+  color: #fff; /* White text color */
+  font-weight: bold;
+}
+
+/* Alternative header color */
+.table thead th.alt-header {
+  background-color: #333; /* Dark grey background */
+}
+
+/* Table rows hover state */
+.table tbody tr:hover {
+  background-color: #f4f4f4;
+}
+
+/* Table row nth child for striping */
+.table tbody tr:nth-child(odd) {
+  background-color: #fcfcfc;
+}
+
+/* Button styles */
+.button,
+.deleteCar { /* Adding the .deleteCar class for buttons in table */
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50; /* Green background */
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 3px #999;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover,
+.deleteCar:hover { /* Adding hover effects for .deleteCar too */
+  background-color: #45a049;
+}
+
+.button:active,
+.deleteCar:active {
+  background-color: #45a049;
+  box-shadow: 0 2px #666;
+  transform: translateY(2px);
+}
+
+/* Add styles for alternative buttons if needed */
+.alt-button {
+  background-color: #f44336; /* Red background for delete buttons */
+}
+
+.alt-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Responsive table */
+@media screen and (max-width: 600px) {
+  /* ... Your existing styles for responsive tables ... */
+}
+
+/* 모든 링크 스타일 */
+.table a {
+  text-decoration: none; /* 밑줄 제거 */
+  color: #000; /* 링크 기본 색상 검정 */
+  cursor: pointer; /* 마우스 커서 손가락 모양 */
+}
+
+/* 링크에 마우스를 올렸을 때의 스타일 */
+.table a:hover {
+  color: #0056b3; /* 마우스를 올렸을 때의 링크 색상 변경 */
+}
+
+h3 {
+	text-align: center;
+	font-size: 39px;
+}
+/* 테이블을 감싸는 컨테이너 스타일 */
+.table-container {
+  max-width: 80%; /* 최대 너비 설정. 필요에 따라 조정하세요 */
+  margin: 0 auto; /* 상하 여백은 0, 좌우는 자동으로 설정하여 중앙 정렬 */
+  padding: 0 20px; /* 좌우에 패딩 추가로 내용이 화면 끝에 닿지 않도록 함 */
+}
+

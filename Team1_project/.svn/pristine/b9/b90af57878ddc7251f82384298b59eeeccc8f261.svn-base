@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+.top{
+	height : 100px;
+	display : inline-block;
+	padding-top : 50px;
+}
+.top-left{
+	margin-left : 25%;
+	width : 7%;
+}
+.top-right{
+	float : right;
+	margin-right : 30%;
+	padding-top : 35px;
+}
+.top-right a{
+	font-size : 140%;
+	color : black;
+	text-decoration: none;
+	margin-right : 20px;
+}
+/* .center{ */
+/* 	display : flex; */
+/* 	margin-left: 25%; */
+/* } */
+/* .side-right{ */
+/* 	display : flex; */
+/* 	margin-left: 10%; */
+/* } */
+.car-img{
+	width : 350px;
+}
+.car-list{
+	display: flex;
+	flex-direction: column;
+}
+/* .car-list-selectOne{ */
+/* 	display: flex; */
+/* } */
+.car-item{
+	display: flex;
+}
+
+/* .center-right-info{ */
+/* 	padding-top : 10%;  */
+/* 	padding-left : 5px; */
+/* 	padding-right : 5px; */
+/* } */
+.side-left {
+	margin: 3rem;
+}
+.footer-info{
+	text-align: center;
+}

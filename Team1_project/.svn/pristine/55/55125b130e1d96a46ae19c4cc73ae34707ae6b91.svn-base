@@ -1,0 +1,71 @@
+@charset "UTF-8";
+
+.top{
+	height : 100px;
+	display : inline-block;
+	padding-top : 50px;
+}
+.top-left{
+	margin-left : 25%;
+	width : 7%;
+}
+.top-right{
+	float : right;
+	margin-right : 30%;
+	padding-top : 35px;
+}
+.top-right a{
+	font-size : 140%;
+	color : black;
+	text-decoration: none;
+	margin-right : 20px;
+}
+/* .center{ */
+	
+/* 	display : flex; */
+/* 	margin-top : 2%; */
+/* 	margin-left: 25%; */
+/* } */
+
+/* .center-left{ */
+/* 	width : 40%; */
+/* } */
+
+
+.carDetail-img{
+	width : 95%;
+	
+}
+
+/* .center-right{ */
+/* 	margin-left : 5%; */
+/* 	width : 25%; */
+/* } */
+
+
+.center-right-top{
+	border :1px solid #ddd;
+	border-radius: 20px;
+	padding: 1rem;
+}
+
+
+.center-right-bottom{
+	margin-top : 10px;
+	border :1px solid #ddd;
+	border-radius: 20px;
+	padding: 1rem;
+	
+	
+}
+.rent-all{
+	display : flex;
+}
+
+.rent-cont{
+	margin-left : 20px;
+}
+
+.rent-cont p {
+	font-size: .9rem;
+}

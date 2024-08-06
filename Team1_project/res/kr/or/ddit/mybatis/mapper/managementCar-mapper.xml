@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 관리자가 차량을 등록, 삭제를 처리하는 xml문서입니다. -->
+<mapper namespace= "managementCar">
+
+	<!-- 렌트카 리스트 출력 -->
+	<select id="carList" resultType="managementCarVo">
+  	 select rent_nm, rent_code, rent_addr, rent_tel, rent_mail
+       from rentcar
+	</select>
+	
+	<!-- 차량 상세정보 조회 -->
+<!-- 	<select id="carDetail" parameterType="String" resultType="managementCarVo">
+	  SELECT 
+  			a.car_no as car_no,
+  			a.rent_code as rent_code,
+  			a.car_type as car_type,
+  			a.car_year as car_year,
+  			a.car_cont as car_cont,
+  			a.car_name as car_name,
+  			b.c_img_path as c_img_path,
+  			c.rent_nm as rent_nm
+ 		FROM car a
+  INNER JOIN rentcar c on(c.rent_code = a.rent_code)
+  INNER JOIN car_img b on(b.car_no = a.car_no)
+       WHERE b.car_no = #{car_no}||' '
+	</select> -->
+	
+	<!-- 차량 상세정보 출력 -->
+	<select id="carDetail" parameterType="String" resultType="managementCarVo">
+		select *
+  		  from car
+         where rent_code = #{rent_code}  
+	</select>
+	
+	
+
+	<!-- 렌트카 업체 정보 존재 여부 검사 -->
+	<select id="companyExists" parameterType="String" resultType="int">
+		select count(*) 
+		  from rentcar
+		 where rent_code = #{rent_code}
+	</select>
+
+	<!-- 렌트카 업체 정보 등록 -->
+	<insert id="carCompanyInsert" parameterType="managementCarVo">
+		insert into rentcar
+             values (#{rent_code}, 
+                     #{rent_nm}, 
+                     #{rent_addr}, 
+                     #{rent_tel}, 
+                     #{rent_mail})
+	</insert>
+
+	<!-- 차량 정보  등록 -->
+	<insert id="carInfoInsert" parameterType="managementCarVo">
+		insert into car
+             values (#{car_no},
+             		 #{rent_code}, 
+             		 #{car_price}, 
+             		 #{car_type}, 
+             		 #{car_year}, 
+             		 #{car_cont}, 
+             		 #{car_name})
+	</insert>
+	
+	<!-- 차량 이미지 등록 -->
+	<insert id="carImgInsert" parameterType="managementCarVo">
+		insert into car_img
+			 values (SEQ_CAR_IMG_NO.nextval, #{car_no}, #{c_img_path})
+	</insert>
+	
+	<!-- 차량 이미지 삭제 -->
+	<delete id="carImgDelete" parameterType="String">
+		delete
+ 		  from car_img
+         where car_no = #{car_no} 
+	</delete>
+ 
+	<!-- 차량 정보 삭제 -->
+	<delete id="carInfoDelete" parameterType="String">
+		delete
+ 		  from car
+ 		 where car_no = #{car_no}
+	</delete>
+
+
+</mapper>

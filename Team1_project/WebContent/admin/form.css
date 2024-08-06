@@ -1,0 +1,105 @@
+/* form-style.css */
+
+/* Base styles for the body to define font and alignment */
+body {
+  line-height: 1.6;
+  padding: 20px;
+  background: #f4f4f4;
+  color: #333;
+}
+
+/* General styles for all forms */
+form {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for form headings */
+form h3 {
+  margin-top: 0;
+  border-bottom: 2px solid #e1e1e1;
+  padding-bottom: 5px;
+  color: #333;
+}
+
+/* Style for form labels */
+form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Style for text fields and text areas */
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+}
+
+/* Style for file input */
+form input[type="file"] {
+  border: none;
+  margin-bottom: 15px;
+}
+
+/* Style for submit button */
+form button,
+form input[type="submit"] {
+  width: auto;
+  display: inline-block;
+  background: #5cb85c;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover,
+form input[type="submit"]:hover {
+  background: #4cae4c;
+}
+
+/* Additional styles for alignment and visibility */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group input[type="checkbox"],
+.form-group input[type="radio"] {
+  display: inline-block;
+  width: auto;
+}
+
+/* Helper classes for validation states */
+.has-error input[type="text"],
+.has-error input[type="email"],
+.has-error input[type="tel"],
+.has-error select,
+.has-error textarea {
+  border-color: #d9534f;
+}
+
+.help-block {
+  color: #d9534f;
+  font-size: 0.85em;
+}
+
+button#submitBtn #cancelBtn{
+    display: block;
+    margin: 0 auto; 
+}
+
+#button {
+	margin-left: 43%;
+}
+

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org/DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 이 문서는 myBatis의 환경 설정을 처리하는 문서입니다. -->
+<configuration>
+	<!-- DB연결용 properties파일 정보 설정 -->
+	<properties resource="kr/or/ddit/mybatis/config/dbinfo.properties" />
+		
+	<!-- 기본 설정값 지정하기 -->
+	<settings>
+		<!-- 데이터가 null로 전달이 되었으면 빈 칸으로 인지 말고 
+		     null로 인식해라.
+		-->
+		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="logImpl" value="LOG4J"/>
+		
+	</settings>
+	
+	<!-- 
+		 myBatis에서 사용할 클래스들의 이름은 패키지명을 포함한 전체 이름을
+	     사용해야 하는데 이 때 전체 이름의 길이가 길어서 사용하기 불편할 수 있는데
+	     이런 경우 전체 이름을 대신해서 사용할 별칭을 설정하여 사용할 수 있다.
+		 형식) <typeAlias type="패키지명을포함한 클래스의 전체이름" alias="별칭"/>
+	  --> 
+	<typeAliases>
+		<typeAlias type="kr.or.ddit.vo.CarListVO" alias="carListVo" />
+		<typeAlias type="kr.or.ddit.vo.CarSearchVO" alias="carSearchVo" />
+		<typeAlias type="kr.or.ddit.vo.CarVO" alias="carVo" />
+		<typeAlias type="kr.or.ddit.vo.RentCarVO" alias="rentCarVo" />
+		<typeAlias type="kr.or.ddit.vo.ResCarVO" alias="resCarVo" />
+		<typeAlias type="kr.or.ddit.vo.ReviewVO" alias="reviewVo" />
+		<typeAlias type="kr.or.ddit.vo.CarCouponVO" alias="carCouponVo" />
+		
+		
+		<typeAlias type="kr.or.ddit.vo.LodgingVO" alias="lodgingVo" />
+		<typeAlias type="kr.or.ddit.vo.LodgingListVO" alias="lodgingListVo" />
+		<typeAlias type="kr.or.ddit.vo.SearchLodgingListVO" alias="searchLodgingListVo" />
+		<typeAlias type="kr.or.ddit.vo.LodgingDetailVO" alias="lodgingDetailVo" />
+		<typeAlias type="kr.or.ddit.vo.RoomsVO" alias="roomsVo" />
+		<typeAlias type="kr.or.ddit.vo.LodgingRoomReviewVO" alias="lodgingRoomReviewVo" />
+		<typeAlias type="kr.or.ddit.vo.ResLodgingInfoVO" alias="reslodginginfoVo" />
+		<typeAlias type="kr.or.ddit.vo.LodgingCouponVO" alias="lodgingCouponVo" />
+		<typeAlias type="kr.or.ddit.vo.ResLodVO" alias="resLodVo" />
+		<typeAlias type="kr.or.ddit.vo.QnaReplyVO" alias="qnaReplyVo" />
+
+
+		<typeAlias type="kr.or.ddit.vo.ManagementCarVO" alias="managementCarVo" />
+		<typeAlias type="kr.or.ddit.vo.ManagementLodgingVO" alias="managementLodgingVo" />
+		<typeAlias type="kr.or.ddit.vo.NoticeVO" alias="noticeVo" />
+		<typeAlias type="kr.or.ddit.vo.EventVO" alias="eventVo" />
+
+
+		<typeAlias type="kr.or.ddit.vo.MemberVO" alias="memVo" />
+		<typeAlias type="kr.or.ddit.vo.QnaVO" alias="qnaVo" />
+		<typeAlias type="kr.or.ddit.vo.ReservationVO" alias="resVo" />
+		
+
+		
+		
+
+
+
+
+
+	</typeAliases>
+	
+	<!-- DB 연결 설정하기 -->
+	<environments default="oracleDev">
+		<environment id="oracleDev">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${id}"/>
+				<property name="password" value="${pass}"/>
+<!-- 				<property name="poolMaximumActiveConnections" value="2"/>활성화된 최대 커넥션 수 -->
+<!-- 				<property name="poolMaximumIdleConnections" value="2"/>유휴상태에서 최대 커넥션 수 -->
+			</dataSource>			
+		</environment>
+		
+	</environments>
+	
+		<!-- 
+			DB에 사용되는 SQL문들이 작성된 mapper파일을 등록하는 부분 
+			형식) <mapper resource="경로명/mapper파일명.xml/>"
+		-->
+	<mappers> 
+		<mapper resource="kr/or/ddit/mybatis/mapper/car-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/event-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/lodging-mapper.xml"/> 
+		<mapper resource="kr/or/ddit/mybatis/mapper/managementCar-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/managementLodging-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/member-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/notice-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/qna-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/reservation-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/review-mapper.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/qnaReply-mapper.xml"/>
+	</mappers>				
+			
+			
+			
+</configuration>	

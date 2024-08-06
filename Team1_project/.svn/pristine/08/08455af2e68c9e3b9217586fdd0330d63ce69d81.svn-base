@@ -1,0 +1,391 @@
+<%@page import="kr.or.ddit.vo.MemberVO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ page isELIgnored="true"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0yaizupxy9&submodules=geocoder"></script>
+<!-- 	<script  src="http://code.jquery.com/jquery-latest.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script> -->
+<title>제주놀멘</title>
+<!-- <-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+ <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="<%= request.getContextPath()%>/font/font.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/main.css">
+<link rel="stylesheet" href="<%= request.getContextPath()%>/Car/carDetail.css">
+<script type="text/javascript" src="<%= request.getContextPath()%>/js/jquery-3.7.1.min.js"></script>
+</head>
+ 
+ 
+<body>
+<!-- 	<input type="button" value = "테스트" id="test"> -->
+
+<!-- rentNm  carName  imgPath  carNo -->
+
+<!-- header str -->
+<div class="border-bottom">
+<div class="container">
+<nav class="navbar navbar-expand-lg justify-content-lg-between">
+  <a class="navbar-brand" href="<%=request.getContextPath()%>/main.jsp"><img alt="로고" src="<%=request.getContextPath()%>/images/logo.png"></a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link navTxt" href="<%=request.getContextPath()%>/lodging/resLodging.jsp">숙소 </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link navTxt" href="<%=request.getContextPath()%>/Car/carList.jsp">렌트카</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link navTxt" href="<%=request.getContextPath()%>/notice/userNotice.jsp">이벤트</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img alt="귤" src="<%=request.getContextPath()%>/images/gyul.png">
+        </a>
+<%
+	MemberVO loginMember = (MemberVO)session.getAttribute("loginMember");
+%>
+<%
+if(loginMember == null){
+	
+%>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="<%=request.getContextPath()%>/Member/login.jsp">로그인/회원가입</a>
+        </div>
+	<%
+} else {		//로그인이 되었을 때..
+%>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a id="mainMyPage"class="dropdown-item" href="<%=request.getContextPath()%>/Member/memUpdate.jsp">마이페이지</a>
+          <a class="dropdown-item" href="<%=request.getContextPath()%>/reservation/reservation.jsp">예약내역</a>
+
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="<%=request.getContextPath()%>/memberLogout.do">로그아웃</a>
+</div>
+
+		
+	<%
+}
+	%>
+        
+      </li>
+    </ul>
+  </div>
+</nav>
+</div>
+</div>
+<!-- header end -->
+<div class = "container smCont">
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->  
+	<div class = "text-center my-5">
+		<img class="carDetail-img" alt="asd" src="<%= request.getContextPath()%>/imageView.do?file=<%= request.getAttribute("imgPath") %>" style="width : 60%; padding-left : 11%;" >
+	</div>
+	
+	<div class = "carName">
+		
+		<div class="car-rent-name">
+			<div class="outlineTxt mb-3"><%= request.getAttribute("car_year") %></div>
+			<div class="car-name"><h1><%= request.getAttribute("carName") %></h1></div>
+			<div class="rent-name"><h6><%= request.getAttribute("rentNm") %></h6></div>
+		</div>
+
+		<hr>
+		<div class = "car-inSurance py-3">
+			<div class="mb-3">자차보험</div>
+			<div class = "inSurances">
+				<div class = "none resBox">
+					<div>
+						<div>미포함</div>
+						<div><input class = "car-res-btn btn btn-outline-warning" type="button" value="차량예약" data-price="11100"></div>
+						<div>이용요금 11,100원</div>
+					</div>
+					<div></div>
+				</div> 
+				<div class="nomal resBox">
+					<div>
+						<div>일반자차</div>
+						<div><input class = "car-res-btn btn btn-outline-warning" type="button" value="차량예약" data-price="21100"></div>
+						<div>이용요금 21,100원</div>
+					</div>
+					<div></div>
+				</div>
+				<div class="perfect resBox">
+					<div>
+						<div>완전자차</div>
+						<div><input class = "car-res-btn btn btn-outline-warning" type="button" value="차량예약" data-price="31100"></div>
+						<div>이용요금 31,100원</div>
+					</div>
+					<div></div>
+				</div>
+			</div>
+			<br>
+		</div>
+		<hr>
+		<div class = "useInfo">
+			<div>이용안내</div>
+			<br>
+			<div class="usingContent"><%= request.getAttribute("carCont") %></div>
+			<br><br>
+		</div>
+		<div class="search">
+			<input id="address" type="text" placeholder="검색할 주소" style ="display : none;">
+			<input id="submit" type="button" value="주소검색" style ="display : none;">
+		</div>
+		<div id="map" style="width:100%;height:600px;"></div>
+		
+	</div>
+	<br>
+	<div class="review-all">
+		<div>리뷰 (평점) <span class= "avg"></span></div>
+		<hr>
+		<div class="review-id-cont">			
+			<div id="reviewCont"></div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+<%
+	String rentAddr = (String)request.getAttribute("rentAddr");
+	String carNo = (String)request.getAttribute("carNo");
+%>
+<div style="display : none;" class="res_rentNm" ><%= request.getAttribute("rentNm") %></div>
+<div style="display : none;" class="res_carName"><%= request.getAttribute("carName") %></div>
+<div style="display : none;" class="res_imgPath"><%= request.getAttribute("imgPath") %></div>
+<div style="display : none;" class="res_carNo"><%= request.getAttribute("carNo") %></div>
+<div style="display : none;" class="res_carCont"><%= request.getAttribute("carCont") %></div>
+<div style="display : none;" class="res_rentAddr"><%= request.getAttribute("rentAddr") %></div>
+<div style="display : none;" class="res_inDate"><%= request.getAttribute("inDate") %></div>
+<div style="display : none;" class="res_outDate"><%= request.getAttribute("outDate") %></div>
+<div style="display : none;" class="res_car_year"><%= request.getAttribute("car_year") %></div>
+<div style="display : none;" class="res_car_price"><%= request.getAttribute("car_price") %></div>
+<!-- style="display : none;" -->
+<form id="formResInfo" action="<%= request.getContextPath()%>/carReservaion.do">
+	<input type="hidden" name="rent_nm" id="res_rent_nm">
+	<input type="hidden" name="car_name" id="res_car_name">
+	<input type="hidden" name="img_path" id="res_img_path">
+	<input type="hidden" name="car_no" id="res_car_no">
+	<input type="hidden" name="car_cont" id="res_car_cont">
+	<input type="hidden" name="rent_addr" id="res_rent_addr">
+	<input type="hidden" name="inDate" id="res_inDate">
+	<input type="hidden" name="outDate" id="res_outDate">
+	<input type="hidden" name="car_year" id="res_car_year">
+	<input type="hidden" name="car_price" id="res_car_price">
+	<input type="hidden" name="car_insuranceprice" id="res_car_insuranceprice">
+</form>
+
+<!-- footer str -->
+<div class="footer">
+	<div class="ftWrap">
+		<div class="ftTxt">
+			<p>(주)제주놀멘컴퍼니</p>
+			<p>주소 : 대전광역시 대전광역시 중구 계룡로 846, 3층 305호 | 대표이사 : 김현경 | 사업자등록번호 : 123-12-12345</p>
+			<p>전화번호 : 042-222-8202 | 호스팅서비스제공자의 상호 표시 : (주)제주놀멘컴퍼니</p>
+		</div>
+		<ul class="mt-3">
+			<li><a href="#">이용약관</a></li>
+			<li><a href="#"><span class="black">개인정보처리방침</span></a></li> 
+			<li><a href="#">소비자 분쟁해결 기준</a></li>
+			<li><a href="#">콘텐츠산업진흥법에 의한 표시</a></li>
+		</ul>
+		<div class=copyright>
+			<p>Copyright JEJUNOLE COMPANY Corp. All rights reserved.</p>
+		</div>
+	</div>
+</div>
+<!-- footer end -->
+</body>
+    <script>
+    $(document).ready(function() {
+    	
+    	 $(document).on('click', '.car-res-btn', function() {
+    		 	var insurancePrice = this.getAttribute('data-price');
+    	        var rentNm = $('.res_rentNm').text();
+    	        var carName = $('.res_carName').text();
+    	        var imgPath = $('.res_imgPath').text();
+    	        var carNo = $('.res_carNo').text();
+    	        var carCont = $('.res_carCont').text();
+    	        var rentAddr = $('.res_rentAddr').text();
+    	        var inDate = $('.res_inDate').text();
+    	        var outDate = $('.res_outDate').text();
+    	        var car_year = $('.res_car_year').text();
+    	        var car_price = $('.res_car_price').text();
+    	        
+    	    	$('#res_rent_nm').val(rentNm);
+    	    	$('#res_car_name').val(carName);
+    	    	$('#res_img_path').val(imgPath);
+    	    	$('#res_car_no').val(carNo);
+    	    	$('#res_car_cont').val(carCont);
+    	    	$('#res_rent_addr').val(rentAddr);
+    	    	$('#res_inDate').val(inDate);
+    	    	$('#res_outDate').val(outDate);
+    	    	$('#res_car_year').val(car_year);
+    	    	$('#res_car_price').val(car_price);
+    	    	$('#res_car_insuranceprice').val(insurancePrice);
+    	    	
+    	    	$('#formResInfo').submit();
+    	   	});
+    	
+    	
+        // 직접 주소를 함수에 전달
+        $(".car-res-btn").on('click',function(){
+        	location.href="<%= request.getContextPath()%>/carReservaion.do";
+        })
+        
+        var carNo = "<%=carNo%>";
+        
+        var address = "<%=rentAddr%>";
+        searchAddressToCoordinate(address);
+        
+        $.ajax({
+            url: "<%=request.getContextPath()%>/carReviewList.do",
+            type: "GET",
+            data:{
+            	"carNo" : carNo
+            },
+            dataType: "json",
+            success : function(carReviewList) {
+                var tableHtml = "";
+                var sum = 0;
+                var cnt = 0;
+                $.each(carReviewList, function(i, v){
+//                 	alert(v.rvw_cont);
+               		tableHtml += `<div>${v.user_id}</div>`;
+               		switch(v.rvw_star){
+               		case 1: tableHtml += `<div class='starsColor'>★☆☆☆☆</div>`;
+               			break;
+               		case 2: tableHtml += `<div class='starsColor'>★★☆☆☆</div>`;
+               			break;
+               		case 3: tableHtml += `<div class='starsColor'>★★★☆☆</div>`;
+               			break;
+               		case 4: tableHtml += `<div class='starsColor'>★★★★☆</div>`;
+               			break;
+               		case 5: tableHtml += `<div class='starsColor'>★★★★★</div>`;
+               			break;
+               		case 0: tableHtml += `<div class='starsColor'>☆☆☆☆☆</div>`;
+               			break;
+               		}
+               		sum+= v.rvw_star;
+               		cnt++;
+               		tableHtml += `<p>${v.rvw_cont}</p>`;
+               		tableHtml += `<hr>`;
+                });
+                avg = sum/cnt;
+                
+                $('#reviewCont').html(tableHtml);
+                if(avg >0){
+	                $('.avg').text(avg + " 점");
+                }
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.status);
+            }
+        });
+        
+        
+    });
+    selectMapList();
+
+  //검색한 주소의 정보를 insertAddress 함수로 넘겨준다.
+  function searchAddressToCoordinate(address) {
+      naver.maps.Service.geocode({
+          query: address
+      }, function(status, response) {
+          if (status === naver.maps.Service.Status.ERROR) {
+              return alert('Something Wrong!');
+          }
+          if (response.v2.meta.totalCount === 0) {
+              return alert('주소 정보가 없습니다.');
+          }
+          var htmlAddresses = [],
+              item = response.v2.addresses[0],
+              point = new naver.maps.Point(item.x, item.y);
+          if (item.roadAddress) {
+              htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+          }
+          if (item.jibunAddress) {
+              htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
+          }
+          if (item.englishAddress) {
+              htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
+          }
+
+          insertAddress(item.roadAddress, item.x, item.y);
+          
+      });
+  }
+
+  // 주소 검색의 이벤트
+  $('#address').on('keydown', function(e) {
+      var keyCode = e.which;
+      if (keyCode === 13) { // Enter Key
+          searchAddressToCoordinate($('#address').val());
+      }
+  });
+  $('#submit').on('click', function(e) {
+      e.preventDefault();
+      searchAddressToCoordinate($('#address').val());
+  });
+  naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
+
+
+      
+  //검색정보를 테이블로 작성해주고, 지도에 마커를 찍어준다.
+  function insertAddress(address, latitude, longitude) {
+  	var mapList = "";
+  	mapList += "<tr>"
+  	mapList += "	<td>" + address + "</td>"
+  	mapList += "	<td>" + latitude + "</td>"
+  	mapList += "	<td>" + longitude + "</td>"
+  	mapList += "</tr>"
+
+  	$('#mapList').append(mapList);	
+
+  	var map = new naver.maps.Map('map', {
+  	    center: new naver.maps.LatLng(longitude, latitude),
+  	    zoom: 14
+  	});
+      var marker = new naver.maps.Marker({
+          map: map,
+          position: new naver.maps.LatLng(longitude, latitude),
+      });
+  }
+
+  //지도를 그려주는 함수
+  function selectMapList() {
+  	
+  	var map = new naver.maps.Map('map', {
+  	    center: new naver.maps.LatLng(37.3595704, 127.105399),
+  	    zoom: 10
+  	});
+  }
+
+
+  // 지도를 이동하게 해주는 함수
+  function moveMap(len, lat) {
+  	var mapOptions = {
+  		    center: new naver.maps.LatLng(len, lat),
+  		    zoom: 15,
+  		    mapTypeControl: true
+  		};
+      var map = new naver.maps.Map('map', mapOptions);
+      var marker = new naver.maps.Marker({
+          position: new naver.maps.LatLng(len, lat),
+          map: map
+      });
+  }
+    </script>
+</html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 관리자가 숙소를 등록, 삭제를 처리하는 xml문서입니다. -->
+
+<mapper namespace= "managementLodging">
+
+<!-- 숙소 리스트 출력 -->
+	<select id="lodgingList" resultType="managementLodgingVo">
+		select lod_code,
+		       lod_type,
+		       lod_nm,
+		       lod_addr,
+		       lod_tel,
+		       lod_mail,
+		       lod_cont,
+		       lod_info
+		  from lodging     
+	</select>
+
+<!-- 숙소 코드로 검색 -->
+	<select id="searchByLodName" parameterType="String" resultType="managementLodgingVo">
+		  select *
+    		from lodging
+   		   where lod_nm like '%'||#{lod_nm}||'%'
+	
+	</select>
+<!-- 숙소 상세 정보 출력 -->
+	<select id="lodgingDetail" parameterType="String" resultType="managementLodgingVo">
+		  select *
+    	    from rooms
+           where lod_code = #{lod_code} 
+	</select>
+
+
+<!-- 숙소 존재 여부 검사 -->
+	<select id="companyExists" parameterType="String" resultType="int"> 
+		select count(*) 
+			  from lodging
+			 where  lod_code = #{lod_code}  
+	</select>
+
+
+<!-- 숙소 등록 -->
+	<insert id="lodgingInsert" parameterType="managementLodgingVo">
+		insert into lodging
+	         values (#{lod_code}, 
+	 		   		 #{lod_type}, 
+	 		 		 #{lod_nm}, 
+	 		 		 #{lod_addr}, 
+	 		 		 #{lod_tel}, 
+	 		 		 #{lod_mail}, 
+	 		 		 #{lod_cont}, 
+	 		 		 #{lod_info}, 
+	 		 		 #{l_img_path})
+	</insert>
+
+
+<!-- 방 등록 -->
+	<insert id="roomInsert" parameterType="managementLodgingVo">
+		insert into rooms
+	         values (#{room_no}, 
+	         		 #{lod_code}, 
+	         		 #{room_price}, 
+	         		 #{room_type}, 
+	         		 #{room_prs})		
+	</insert>
+
+<!-- 객실 이미지 등록 -->
+	<insert id="roomImgInsert" parameterType="managementLodgingVo">
+		insert into room_img
+	  	     values (1, 
+	  	     		 #{room_no}, 
+	  	     		 #{lod_code},
+	  	     		 #{r_img_path})
+	</insert>
+
+<!-- 객실 이미지 삭제 -->
+	<delete id="roomImgDelete" parameterType="String">
+		delete 
+	   	  from room_img
+	     where lod_code = #{lod_code} 
+	</delete>
+
+<!-- 객실 정보 삭제 -->
+	<delete id="roomInfoDelete" parameterType="managementLodgingVo">
+		delete 
+	  	  from rooms
+	     where room_no = #{room_no}
+	      and  lod_code = #{lod_code} 
+	</delete>
+	
+<!-- 숙소 삭제 -->
+	<delete id="lodgingDelete" parameterType="String">
+		delete
+		  from lodging
+		 where lod_code = #{lod_code} 
+	</delete>
+	
+	
+
+</mapper>

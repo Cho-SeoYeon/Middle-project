@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+.all-div{
+	display : flex;
+	flex-direction: column;
+	
+}
+.top{
+	height : 100px;
+	display : inline-block;
+	padding-top : 50px;
+}
+.top-left{
+	margin-left : 25%;
+	width : 7%;
+}
+.top-right{
+	float : right;
+	margin-right : 30%;
+	padding-top : 35px;
+}
+.top-right a{
+	font-size : 140%;
+	color : black;
+	text-decoration: none;
+	margin-right : 20px;
+}
+.carDetail-img{
+	width: 100%;
+}
+/* .car-rent-name{ */
+/* 	display : flex; */
+/* /* 	flex-direction: column; */ */
+/* } */
+.rent-name h6 {
+	color: #777;
+}
+/* .car-name{ */
+/* 	margin-left : 25%; */
+/* } */
+
+/* .rent-name{ */
+/* 	margin-left : 20px; */
+/* 	padding-top : 13px; */
+/* } */
+.car-inSurance{
+/* 	margin-left : 25%; */
+	display : flex;
+	flex-direction: column;
+}
+.inSurances{
+/* 	margin-left : -19.5%; */
+	display : flex;
+	justify-content: space-between;
+}
+
+.inSurances::before,
+.inSurances::after {
+  content: "";
+  flex: 0 1 5px; /* 여기서 flex-basis 값을 조절하여 간격을 미세 조정할 수 있음 */
+}
+
+/* .useInfo{ */
+/* 	margin-left : 25%; */
+/* } */
+.resBox {
+	border : 1px solid #ddd;
+	width : 300px;
+	height : 110px;
+	padding: 2rem;
+	border-radius: 5px;
+}
+.starsColor {
+	color: orange;
+}
+.car-res-btn{
+	float:right;
+}
+/* .review-all{ */
+/* 	margin-left : 25%; */
+/* 	width : 80%; */
+/* } */
+
+.review-id-cont{
+	display : flex;
+	flex-direction: column;
+}
+
+.usingContent{
+	color: #777;
+	font-size: .9rem;
+}
+
+.outlineTxt {
+	display: inline-block;
+	border: 1px solid #ddd;
+	padding: .5rem;
+	border-radius: 5px;
+}
+
+
+
+
+
+
+
+
+

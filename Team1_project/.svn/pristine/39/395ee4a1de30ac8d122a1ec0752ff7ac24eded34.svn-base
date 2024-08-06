@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="member">
+	<insert id="insertMember" parameterType="memVo">
+		insert into member 
+			values(#{user_id}, #{user_pass}, #{user_name}, #{user_tel}, #{user_mail}, #{user_bir})
+	</insert>
+	
+	<select id="checkId" parameterType="string" resultType="int">
+		select count(user_id) cnt
+			from member 
+			where user_id = #{user_id}
+	</select>
+
+	<select id="getLoginMember" parameterType="memVo" resultType="memVo">
+		select * from member
+		where user_id = #{user_id} and user_pass = #{user_pass}
+	</select>
+	
+	<select id="getFindId" parameterType="memVo" resultType="memVo">
+		select user_id from member 
+ 		where user_name = #{user_name} and user_tel = #{user_tel}
+	</select>
+	
+	<select id="getFindPass" parameterType="memVo" resultType="memVo">
+		select user_pass from member 
+ 		where user_id = #{user_id} and user_tel = #{user_tel}
+	</select>
+	
+	<update id="memUpdate" parameterType="memVo">
+		UPDATE MEMBER 
+		   SET USER_PASS=#{user_pass}, USER_TEL=#{user_tel}, USER_MAIL=#{user_mail}
+		 WHERE USER_ID=#{user_id}
+	</update>
+</mapper>

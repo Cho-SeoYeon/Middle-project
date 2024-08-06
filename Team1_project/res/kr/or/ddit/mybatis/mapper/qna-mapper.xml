@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<!-- QNA 대한 xml문서 입니다. -->
+	
+<mapper namespace="qna">
+
+	<!-- QNA 전체문의내역보기_ -->
+	<select id="qnaList" resultType="qnaVo">
+		SELECT AAA.*
+       	  FROM (
+				SELECT ROWNUM RNUM
+	        		 , LAST_VALUE(ROWNUM) OVER() AS TOTAL_CNT
+	        		 , AA.*
+	        	  FROM (
+						SELECT QNA_NO
+							 , QNA_PASS
+							 , QNA_TITLE
+							 , QNA_CONT
+							 , QNA_DATE
+						  FROM QNA
+						  <include refid="qnaListWhere"/>
+						 ORDER BY QNA_DATE DESC
+				  	  ) AA
+       		 ) AAA
+         WHERE 1=1
+           AND RNUM BETWEEN #{startNo} AND #{endNo}
+	</select>
+	
+	<select id="qnaListCnt" resultType="int">
+		SELECT COUNT(*)
+		  FROM QNA
+		  <include refid="qnaListWhere"/>
+		 ORDER BY QNA_DATE DESC
+	</select>
+	
+	<sql id="qnaListWhere">
+		 <where>
+			<if test="searchTxt != null and searchTxt != ''">
+				AND (
+			    	 QNA_TITLE LIKE '%' || #{searchTxt} || '%'
+				     OR QNA_TITLE LIKE '%' || #{searchTxt} || '%'
+				     OR QNA_CONT LIKE '%' || #{searchTxt} || '%'
+				     OR QNA_DATE LIKE '%' || #{searchTxt} || '%'
+				  )
+			</if>
+		 </where>
+	</sql>
+	
+	<!-- QNA 나의 문의등록 -->
+	<insert id="myQnaInsert" parameterType="qnaVo" >
+		INSERT INTO QNA(QNA_NO, QNA_TITLE, QNA_CONT, QNA_PASS, QNA_DATE, USER_ID)
+		VALUES(seq_qna_no.nextval, #{qna_title},#{qna_cont},#{qna_pass},sysdate,#{user_id})
+	</insert>
+	
+
+	
+	<!-- QNA 문의 상세보기(문의내용)  -->
+	<select id="qnaDetail" parameterType="int" resultType="qnaVo">
+	 SELECT A.QNA_NO
+	 	  ,	A.QNA_PASS
+	 	  , A.QNA_TITLE
+	 	  , A.QNA_CONT
+	 	  , A.QNA_DATE
+	 	  , B.RPY_CONT
+	 	  , B.RPY_DATE
+       FROM QNA A
+       LEFT JOIN QNAREPLY B ON (A.QNA_NO = B.QNA_NO)
+      WHERE A.QNA_NO = #{qna_no} 
+	</select>
+	
+	<!--QNA문의 답변등록(관리자)	-->  
+	
+	
+	<!-- 관리자용 QNA리스트 출력 -->
+	<select id="adminQnaList" resultType="qnaVo">
+		SELECT QNA_NO, QNA_TITLE, QNA_CONT, QNA_DATE, USER_ID
+  		  FROM QNA
+  		 order by qna_no desc 
+	</select>
+	
+
+
+
+
+</mapper>

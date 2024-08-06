@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<!-- RESERVATION 대한 xml문서 입니다. -->
+	
+<mapper namespace="reservation">
+	<!-- 이용전 예약 내역(숙소) -->
+	<select id = "myResRoomBefore" parameterType="string" resultType="resVo">
+			SELECT B.RES_R_NO, A.L_IMG_PATH, A.LOD_TYPE, A.LOD_NM, B.ROOM_NO, C.ROOM_TYPE, C.ROOM_PRS, B.LOD_START, B.LOD_END
+			  FROM LODGING A 
+		INNER JOIN RES_LOD B ON(A.LOD_CODE = B.LOD_CODE)
+		INNER JOIN ROOMS C ON(B.ROOM_NO = C.ROOM_NO)
+		
+	<![CDATA[
+	WHERE B.USER_ID =#{user_id} AND TO_CHAR(B.LOD_START, 'YYYY-MM-DD') > TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		]]>
+	</select>
+	<!-- 이용후 예약 내역(숙소) -->
+	<select id= "myResRoomAfter" parameterType = "string" resultType ="resVo">
+			SELECT B.RES_R_NO, A.L_IMG_PATH, A.LOD_TYPE, A.LOD_NM, B.ROOM_NO, C.ROOM_TYPE, C.ROOM_PRS, B.LOD_START, B.LOD_END
+		      FROM LODGING A 
+		INNER JOIN RES_LOD B ON(A.LOD_CODE = B.LOD_CODE)
+		INNER JOIN ROOMS C ON(B.ROOM_NO = C.ROOM_NO)
+		
+	<![CDATA[
+		WHERE B.USER_ID =#{user_id} AND TO_CHAR(B.LOD_START, 'YYYY-MM-DD') <= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	]]>
+	</select>
+	<!-- 이용후 예약 내역(숙소리뷰) -->
+	<select id= "afterRoomReview" parameterType = "int" resultType ="resVo">
+			SELECT B.RES_R_NO, A.L_IMG_PATH, A.LOD_TYPE, A.LOD_NM, B.ROOM_NO, C.ROOM_TYPE, C.ROOM_PRS, B.LOD_START, B.LOD_END
+		      FROM LODGING A 
+		INNER JOIN RES_LOD B ON(A.LOD_CODE = B.LOD_CODE)
+		INNER JOIN ROOMS C ON(B.ROOM_NO = C.ROOM_NO)
+		
+	<![CDATA[
+		WHERE B.RES_R_NO =#{res_r_no} TO_CHAR(B.LOD_START, 'YYYY-MM-DD') <= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	]]>
+	</select>
+	
+	<!-- 이용전 예약 내역(차량) -->
+	<select id="myResCarBefore" parameterType="string" resultType = "resVo">
+			SELECT C.RES_C_NO, B.CAR_TYPE, B.CAR_NAME, B.CAR_YEAR, A.RENT_NM, C.RENT_START, C.RENT_END, D.C_IMG_PATH
+			  FROM CAR B
+		INNER JOIN RENTCAR A ON A.RENT_CODE = B.RENT_CODE
+		INNER JOIN RES_CAR C ON C.CAR_NO = B.CAR_NO
+		INNER JOIN CAR_IMG D ON C.CAR_NO = D.CAR_NO
+
+		<![CDATA[
+			 WHERE C.USER_ID = #{user_id} AND TO_CHAR(C.RENT_START, 'YYYY-MM-DD') > TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		]]>
+	</select>
+	<!-- 이용후 예약 내역 (차량)-->
+	<select id="myResCarAfter" parameterType="string" resultType = "resVo">
+			SELECT C.RES_C_NO, B.CAR_TYPE, B.CAR_NAME, B.CAR_YEAR, A.RENT_NM, C.RENT_START, C.RENT_END, D.C_IMG_PATH
+			  FROM CAR B
+		INNER JOIN RENTCAR A ON A.RENT_CODE = B.RENT_CODE
+		INNER JOIN RES_CAR C ON C.CAR_NO = B.CAR_NO
+		INNER JOIN CAR_IMG D ON C.CAR_NO = D.CAR_NO
+		<![CDATA[
+			 WHERE C.USER_ID = #{user_id} AND TO_CHAR(C.RENT_START, 'YYYY-MM-DD') <= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		]]>
+	</select>
+	<!-- 이용후 예약 내역(차량리뷰) -->
+	<select id= "afterCarReview" parameterType = "int" resultType ="resVo">
+		    SELECT C.RES_C_NO, B.CAR_TYPE, B.CAR_NAME, B.CAR_YEAR, A.RENT_NM, C.RENT_START, C.RENT_END, D.C_IMG_PATH
+			  FROM CAR B
+		INNER JOIN RENTCAR A ON A.RENT_CODE = B.RENT_CODE
+		INNER JOIN RES_CAR C ON C.CAR_NO = B.CAR_NO
+		INNER JOIN CAR_IMG D ON C.CAR_NO = D.CAR_NO
+		<![CDATA[
+			WHERE  C.RES_C_NO = #{res_c_no} AND TO_CHAR(C.RENT_START, 'YYYY-MM-DD') <= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		]]>
+	</select>
+	
+	<delete id="delResBeforeRoom" parameterType="resVo">
+		DELETE RES_LOD
+		WHERE RES_R_NO=#{res_r_no} AND USER_ID=#{user_id}
+	</delete>
+	
+	<delete id="delResBeforeCar" parameterType="resVo">
+		DELETE RES_CAR 
+		WHERE RES_C_NO=#{res_c_no} AND USER_ID=#{user_id}
+	</delete>
+
+</mapper>

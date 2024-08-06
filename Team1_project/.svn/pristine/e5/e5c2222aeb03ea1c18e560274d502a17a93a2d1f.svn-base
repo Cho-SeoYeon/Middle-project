@@ -1,0 +1,259 @@
+@charset "UTF-8";
+
+.lodging {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px; /* 숙소 사이에 간격 추가 */
+}
+.lod-img{
+	width : 500px;
+	height : 300px;	
+}
+.lod-img img{
+	width:95%;
+	height:95%;
+	border-radius : 2%
+}
+.lod-img img:hover{
+	filter: brightness(80%);	
+}
+.lod-info-container {
+    flex: 1; /* 나머지 공간을 모두 차지하도록 수정 */
+    margin-left: 20px; /* 이미지와 정보 사이의 간격 추가 */
+	display : flex;
+	flex-direction: column;
+	/* border : 1px solid gray; */
+}
+.lod-list-info{
+	/* border : 1px solid red; */
+}
+.lod-list-lodType{
+	 margin-bottom: 10px; 
+}
+.lod-list-lodName{
+	font-size : 1.2rem;
+	font-weight : bold;
+}
+.lod-list-price{
+	margin-top: 90px;
+	text-align: right;
+	font-size : 1.4rem;
+	font-weight : bold;
+	/* border : 1px solid red; */
+}
+.room-info{
+	/*border : 1px solid red;*/
+}
+/* 숙소 상세페이지 출력 CSS*/
+.lodg-main-img{
+	width : 800px;
+	heigth : 300px;
+}
+/* ----------------------*/
+.lodging-detail-all{
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+}
+/* .lodging-detail-body{ */
+/* 	width : 60%; */
+/* 	margin : 0 auto; */
+	/* padding : 0 20px; */
+/* } */
+.lodging-detail-body-img{
+/* 	width : 100%; */
+	height : auto;
+	text-align:center;
+	align-items : center;
+	margin-bottom : 20px;
+}
+.lodging-detail-body-img img{
+	width : 100%;
+	max-height: 500px;
+	/* align-items : center; */
+	display: inline-block; 
+
+}
+.detail-lod-Type-Name{
+	/* border : 1px solid gray; */
+	display: flex; 
+	flex-direction: column;
+}
+.detail-lod-Type{
+	/* border : 1px solid gray; */
+	margin: 0;
+}
+.detail-lod-Name{
+	font-size : 1.5rem;
+	font-weight : bold;
+	/* border : 1px solid gray; */
+	margin: 0;
+}
+/* .detail-lod-select{ */
+/* 	font-size : 1.2rem; */
+/* 	font-weight : bold; */
+/* } */
+.detail-oneRoom-info{
+	background-color : #f9f7f3;
+	/* border-radius : 5%; */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.005); /* 그림자 추가 */
+	display : flex;
+	/* border : 1px solid red; */
+	margin-bottom: 20px;
+}
+.room-img {
+
+    flex: 1; /* 가변 너비 */
+    padding: 2rem;
+}
+.room-img img{
+	border-radius: 2%;
+	width:100%; 
+	height:80%;
+}
+.room-info{
+    flex: 2; /* 가변 너비, room-img보다 넓게 설정 */
+    padding: 1.5rem; /* 내용 주변에 여백을 추가 */
+	display: flex;
+	flex-direction: column;
+}
+.room-type{
+	font-weight: bold;
+	font-size : 1.1rem;
+	flex: 1;  
+}
+.room-type-innerbox{
+    display: flex;
+    background-color: white;
+    padding : 2rem;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.03); /* 그림자 추가 */
+/* 	margin-bottom: 5%; */
+/* 	margin-right: 5%; */
+	flex: 2;
+}
+.checkinNoutTime {
+    flex: 2; /* 가변 너비 */
+    color : gray;
+    font-size : 0.8rem;
+}
+.room-type-innerbox .room-price{
+	font-size : 1.2rem;
+	font-weight : bold;
+	text-align : right;
+	margin-bottm : 3%;
+}
+/* input[type=button]{ */
+/*   background-color: orange; */
+/*   border: none; */
+/*   color: white; */
+/*   padding: 8px 14px; */
+/*   text-decoration: none; */
+/*   margin: 4px 2px; */
+/*   cursor: pointer; */
+/* } */
+/* .detail-lodg-intro, .detail-lodg-info, .detail-lodg-location, .detail-lodg-revw{ */
+/* 	font-size : 1.2rem; */
+/* 	font-weight : bold; */
+/* } */
+/* 리뷰 */
+.review .lodg-review-cont{
+    display : flex;
+}
+.review .lodg-review-cont .review-info{
+	flex : 1;
+	padding: 10px;
+}
+.review .lodg-review-cont .review-cont{
+	flex : 2;
+	padding: 10px;
+}
+/* 예약 관련 페이지 */
+.res-lodging-all{
+	display : flex;
+	flex-direction : column;
+}
+.res-lodging-body{
+	display : flex;
+	width : 60%;
+	margin : 0 auto;
+}
+.res-left{
+	border : 1px solid gray;
+	flex : 2;
+	display:flex;
+	flex-direction: column;
+	margin : 20px;
+	padding : 15px;
+}
+/*
+.res-info-check, .sale-info-check, .pay-info-check{
+	border : 1px solid gray;
+}
+*/
+/* .res-user-info, .res-sale-info, .res-pay-method{ */
+/* 	font-size : 1.1rem; */
+/* 	font-weight : bold; */
+/* } */
+/* .res-info-check input[type="text"]{ */
+/* 	width : 200px; */
+/* 	padding : 5px; */
+/* 	margin-bottom : 10px; */
+/* } */
+.res-right{
+	border : 1px solid gray;
+	flex : 1;
+	display:flex;
+	flex-direction: column;
+	margin : 20px;
+	padding : 10px;
+}
+.lodg-info-lodgName{
+	font-weight : bold;
+	font-size : 1.1rem;
+}
+/* .res-room-img{ */
+/* 	border : 1px solid gray; */
+/* } */
+.lodg-info-check{
+	border : 1px solid #ddd;
+	border-radius: 20px;
+	padding : 1rem;
+}
+.pay-info{
+	border : 1px solid #ddd;
+	border-radius: 20px;
+	padding : 1rem;
+}
+/* .price-table, .lodg-table{ */
+/* 	border : 1px solid gray; */
+/* } */
+
+.priceValue{
+	text-align : right;
+}
+/* 결제수단 버튼*/
+.pay-method-Btn {
+    background-color: #f0f0f0; /* 기본 배경색 */
+    color: black; /* 기본 텍스트 색상 */
+    border: 1px solid #ddd; /* 테두리 */
+    padding: 10px; /* 패딩 */
+    cursor: pointer; /* 커서 스타일 */
+}
+.pay-method-Btn.active {
+    background-color: #4CAF50; /* 활성화 배경색 */
+    color: white; /* 활성화 텍스트 색상 */
+}
+
+/**/
+.side-left {
+	margin: 3rem;
+}
+
+.review-star {
+	color: orange;
+}
+
+.txtSize {
+	font-size: .9rm;
+	
+}

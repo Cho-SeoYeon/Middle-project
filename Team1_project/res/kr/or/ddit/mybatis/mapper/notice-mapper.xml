@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<!-- 공지사항에 대한 xml문서 입니다. -->
+	
+<mapper namespace="notice">
+
+	<!-- 공지사항 전체리스트 조회 -->
+	<select id="noticeList" resultType="noticeVo">
+		select notice_no, notice_title, notice_cont, notice_date
+		
+		  from notice
+	</select>
+	
+	<!-- 공지사항 상세내용 조회 -->
+	<select id="noticeDetail" parameterType="int" resultType="noticeVo">
+		select *
+		  from notice
+		 where notice_no = #{notice_no} 
+	
+	</select>
+
+	<!-- 공지사항 등록 --> 
+	<insert id="noticeInsert" parameterType="noticeVo">
+		insert into notice
+		  values (SEQ_NOTICE_NO.nextval, #{notice_title}, #{notice_cont}, sysdate)
+	</insert>
+
+	<!-- 공지사항 삭제 -->
+	<delete id="noticeDelete" parameterType="int">
+		delete 
+		  from notice
+		 where notice_no = #{notice_no} 	
+	</delete>
+
+</mapper>

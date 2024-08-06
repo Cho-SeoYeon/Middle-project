@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<mapper namespace= "qnaReply">
+
+<!-- 문의사항 번호에 대한 답변 등록 -->
+	<insert id="replyInsert" parameterType="qnaReplyVo">
+		INSERT INTO QNAREPLY (QNA_NO, RPY_CONT, RPY_DATE)
+		VALUES (10, 'asdasdasd', sysdate);
+	</insert>
+</mapper>

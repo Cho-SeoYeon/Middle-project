@@ -1,0 +1,254 @@
+@charset "UTF-8";
+/*
+**	박신애 CSS (메인/회원가입)
+*/
+html, body {
+	font-family: 'GmarketM', sans-serif;
+}
+ul {
+	padding-left: 0;
+	list-style: none;
+}
+.bold {
+	font-weight: 600;
+}
+
+a {
+	color: #333;
+}
+@supports ((-webkit-transform-style: preserve-3d) or (transform-style:preserve-3d)) {
+    .active.carousel-item-right,.carousel-item-next {
+        -webkit-transform:translate3d(0,0,0);
+        transform: translate3d(0,0,0)
+    }
+}
+
+.row {
+	margin: 0;
+}
+/* header */
+.navbar-brand img {
+	width: 34%;  
+	
+}
+.navbar-collapse {
+	position: absolute;
+	right: 0;
+}
+.dropdown-toggle img {
+	width: 20px;
+}
+
+.navTxt {
+	font-size: 1.2rem;
+	color: #333;
+}
+/*  visual */
+
+.visual {
+	position: relative;
+}
+.visual img{
+	width: 100%;
+	height: auto;
+}
+.visualTxt {
+	position: absolute;
+	top : 30%;
+	left: 20%;
+	color: #fff;
+}
+.searchArea {
+	width: 60%;
+	background: rgba(255,255,255,0.9);
+	position: absolute;
+	bottom: 20%;
+	margin-left: 20%;
+	padding: 3rem 2rem;
+	border-radius: 10px;
+}
+
+.xsCont {
+	max-width: 500px !important;
+	padding: 6rem 0;	
+}
+
+.smCont {
+	max-width: 1200px !important;
+}
+.txtColorG {
+	color: #777;
+	
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+	background-color : #fd7e14;
+}
+
+/* event carousel */
+.carousel-item {
+	transition : transform .6s;
+}
+.carousel-item ul {
+	display: flex;
+}
+.carousel-item li {
+	margin: 0 10px;
+}
+.carousel-item img {
+	border-radius: 10px;
+}
+
+@media (min-width: 1400px){
+.container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    max-width: 1620px;
+}
+/* footer */
+
+.footer{
+	width: 100%;
+	clear: both;
+	padding-top: 150px;
+}
+
+.ftWrap {
+	width: 100%;
+	padding: 3rem;
+	background-color: #FAFAFA;
+}
+.ftTxt {
+	font-size: .8rem;
+	color: #ACA19F;
+	
+}
+
+.ftTxt p {
+	font-weight: 400;
+	margin-bottom: 0;
+}
+
+.footer ul {
+	display: flex;
+}
+
+.footer li {
+	margin: 0 10px;
+}
+
+.footer li:first-child {
+	margin-left: 0;
+}
+.footer a {
+	font-size: .85rem;
+	color: rgb(153, 153, 153);
+	text-decoration: none;
+}
+
+.footer a:hover {
+	opacity: 0.6;
+	text-decoration: underline;
+	
+}
+
+.copyright {
+	color: #ACA19F;
+	font-size: .8rem;
+	font-family: 'GmarketL'; 
+}
+
+.black {
+	color: #444;
+}
+
+/*
+**	조민지 CSS (마이페이지)
+*/
+.mypage {
+  list-style-type: none;
+  margin: 3rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.mypage li {
+	border-bottom: 1px solid #ddd;
+}
+.mypage li:last-child {
+	border: 0;
+}
+
+.mypage li a {
+  text-decoration: none;
+  padding: 1rem;
+  display: block;
+  color: #000;
+}
+.mypage li a:hover {
+  background: #FAFAFA;
+  color: #ACA19F;
+}
+
+.cont1 {
+  margin: 0 auto;
+}
+
+/* reservattion.jsp */
+.review_score {
+      width : 100%; 
+      box-sizing : border-box; 
+      display : inline-flex; 
+      float : left;
+      flex-direction : row; 
+      justify-content : flex-start;
+   }
+   
+   .review_score .star {
+      width : 25px; 
+      height : 25px; 
+      margin-right : 10px;
+      display : inline-block; 
+      background : url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FE2bww%2FbtsviSSBz4Q%2F5UYnwSWgTlFt6CEFZ1L3Q0%2Fimg.png') no-repeat;
+      background-size : 100%; 
+      box-sizing : border-box; 
+   }
+   
+   .review_score .star.on {
+      width : 25px; 
+      height : 25px;
+      margin-right : 10px;
+      display : inline-block; 
+      background : url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb2d6gV%2FbtsvbDoal87%2FXH5b17uLeEJcBP3RV3FyDk%2Fimg.png') no-repeat; 
+      background-size : 100%; 
+      box-sizing : border-box; 
+   }
+   .star_box {
+      width : 400px;
+      box-sizing : border-box;
+      display : inline-block;
+      margin : 15px 0;
+      background : #F3F4F8;
+      border : 0;
+      border-radius : 10px;
+      height : 100px;
+      resize : none;
+      padding : 15px;
+      font-size : 13px;
+      font-family : sans-serif;
+   }
+   .btn02 {
+      display : block;
+      width : 400px;
+      font-weight : bold;
+      border : 0;
+      border-radius : 10px;
+      max-height : 50px;
+      padding : 15px 0;
+      font-size : 1.1em;
+      text-align : center;
+      background : bisque;
+   }
+   
+   
+   /* bootstrap table */
+   .table>tbody {
+   display: contents; 
+   }
